@@ -55,6 +55,7 @@ Customize the scan with additional options:
     include_paths: 'src/,lib/'
     exclude_paths: 'test/,docs/'
     scan_timeout: '600'
+    scanners: 'sast,sca,secrets'
 ```
 
 ## Inputs
@@ -66,6 +67,38 @@ Customize the scan with additional options:
 | `include_paths` | Comma-separated paths to include in scan | No | `''` (all files) |
 | `exclude_paths` | Comma-separated paths to exclude from scan | No | `''` (none) |
 | `scan_timeout` | Scan timeout in seconds | No | `300` |
+| `scanners` | Security scanners to run | No | `sast,sca` |
+
+## Scanner Options
+
+The `scanners` parameter allows you to customize which security scanners run during analysis:
+
+- **`sast`** - Static Application Security Testing (code vulnerabilities)
+- **`sca`** - Software Composition Analysis (dependency vulnerabilities)
+- **`secrets`** - Secret detection (API keys, passwords, tokens)
+- **`antipatterns`** - Code quality and duplicate code detection
+- **`iac`** - Infrastructure as Code security (Terraform, CloudFormation, etc.)
+- **`all`** - Run all available scanners
+
+**Default:** If not specified, runs `sast,sca`
+
+### Scanner Examples
+
+Run all scanners:
+```yaml
+- uses: CodeAnt-AI/codeant-ci-scan-action@v0.0.6
+  with:
+    access_token: ${{ secrets.ACCESS_TOKEN_GITHUB }}
+    scanners: 'all'
+```
+
+Run specific scanners:
+```yaml
+- uses: CodeAnt-AI/codeant-ci-scan-action@v0.0.6
+  with:
+    access_token: ${{ secrets.ACCESS_TOKEN_GITHUB }}
+    scanners: 'sast,secrets,iac'
+```
 
 ## Setup
 
