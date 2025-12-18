@@ -25,6 +25,10 @@ inputs:
     description: 'Scan timeout in seconds'
     required: false
     default: '300'
+  scanners:
+    description: 'Security scanners to run (sast, sca, secrets, antipatterns, iac, all)'
+    required: false
+    default: 'sast,sca'
 
 runs:
   using: 'composite'
@@ -59,6 +63,7 @@ runs:
         INCLUDE_PATHS: ${{ inputs.include_paths }}
         EXCLUDE_PATHS: ${{ inputs.exclude_paths }}
         SCAN_TIMEOUT: ${{ inputs.scan_timeout }}
+        SCANNERS: ${{ inputs.scanners }}
       run: |
         bash start_scan.sh \
           -a "$ACCESS_TOKEN" \
@@ -68,4 +73,5 @@ runs:
           -s github \
           -i "$INCLUDE_PATHS" \
           -e "$EXCLUDE_PATHS" \
-          -t "$SCAN_TIMEOUT"
+          -t "$SCAN_TIMEOUT" \
+          --scanners "$SCANNERS"
